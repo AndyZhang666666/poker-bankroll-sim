@@ -1,0 +1,30 @@
+{
+  "generatedBy": "scripts/verify.mjs",
+  "generatedAt": "2026-09-14",
+  "trials": 10000,
+  "seed": 20260914,
+  "id": "case3_aggressive",
+  "name": "激进型",
+  "params": {
+    "initialBankroll": 5000,
+    "buyIn": 500,
+    "winRate": 0.54,
+    "variance": 15,
+    "sessions": 500,
+    "targetBankroll": 15000
+  },
+  "buyInCount": 10,
+  "expectedSessionProfit": 70,
+  "bustRatePct": 42.69,
+  "bustRateAnalyticPct": 41.51,
+  "bustRateDiffPctPoints": 1.18,
+  "reachTargetRatePct": 55.86,
+  "medianMaxDrawdownPct": 84.05,
+  "p90MaxDrawdownPct": 100,
+  "medianBustSession": 32,
+  "bustCount": 4269,
+  "medianFinal": 26996.86,
+  "meanFinal": 26782.19,
+  "p10Final": 0,
+  "p90Final": 63413.83
+}

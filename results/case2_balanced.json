@@ -1,0 +1,30 @@
+{
+  "generatedBy": "scripts/verify.mjs",
+  "generatedAt": "2026-09-14",
+  "trials": 10000,
+  "seed": 20260914,
+  "id": "case2_balanced",
+  "name": "平衡型",
+  "params": {
+    "initialBankroll": 10000,
+    "buyIn": 500,
+    "winRate": 0.52,
+    "variance": 10,
+    "sessions": 500,
+    "targetBankroll": 20000
+  },
+  "buyInCount": 20,
+  "expectedSessionProfit": 30,
+  "bustRatePct": 29.61,
+  "bustRateAnalyticPct": 29.11,
+  "bustRateDiffPctPoints": 0.5,
+  "reachTargetRatePct": 54.23,
+  "medianMaxDrawdownPct": 70.91,
+  "p90MaxDrawdownPct": 100,
+  "medianBustSession": 137,
+  "bustCount": 2961,
+  "medianFinal": 22418.13,
+  "meanFinal": 21947.11,
+  "p10Final": 0,
+  "p90Final": 46567.07
+}

@@ -78,6 +78,24 @@ const payload = {
 mkdirSync(resolve(ROOT, "results"), { recursive: true });
 writeFileSync(resolve(ROOT, "results/verify.json"), JSON.stringify(payload, null, 2) + "\n");
 
+// 同时按任务书要求把三个场景各写一份独立 JSON，方便外部脚本单独引用。
+for (const r of results) {
+  writeFileSync(
+    resolve(ROOT, `results/${r.id}.json`),
+    JSON.stringify(
+      {
+        generatedBy: "scripts/verify.mjs",
+        generatedAt: payload.generatedAt,
+        trials: TRIALS,
+        seed: SEED,
+        ...r,
+      },
+      null,
+      2,
+    ) + "\n",
+  );
+}
+
 console.log(`三场景 × ${TRIALS} 次，耗时 ${payload.elapsedMs}ms\n`);
 for (const r of results) {
   console.log(`${r.name}（${r.buyInCount} 个买入，胜率 ${r.params.winRate * 100}%，方差 ${r.params.variance}）`);

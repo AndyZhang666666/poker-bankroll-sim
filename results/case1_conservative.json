@@ -1,0 +1,30 @@
+{
+  "generatedBy": "scripts/verify.mjs",
+  "generatedAt": "2026-09-14",
+  "trials": 10000,
+  "seed": 20260914,
+  "id": "case1_conservative",
+  "name": "保守型",
+  "params": {
+    "initialBankroll": 20000,
+    "buyIn": 500,
+    "winRate": 0.53,
+    "variance": 8,
+    "sessions": 500,
+    "targetBankroll": 30000
+  },
+  "buyInCount": 40,
+  "expectedSessionProfit": 42,
+  "bustRatePct": 2.64,
+  "bustRateAnalyticPct": 2.32,
+  "bustRateDiffPctPoints": 0.32,
+  "reachTargetRatePct": 75.6,
+  "medianMaxDrawdownPct": 36.16,
+  "p90MaxDrawdownPct": 69.78,
+  "medianBustSession": 260.5,
+  "bustCount": 264,
+  "medianFinal": 40756.66,
+  "meanFinal": 40696.97,
+  "p10Final": 20609.22,
+  "p90Final": 61207.52
+}
