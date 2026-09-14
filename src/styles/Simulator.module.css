@@ -1,0 +1,152 @@
+.field {
+  display: block;
+  margin-bottom: 14px;
+}
+.fieldHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-bottom: 5px;
+  gap: 8px;
+}
+.fieldHead b {
+  color: var(--text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.fieldHead em { font-style: normal; font-size: 11px; color: var(--muted); font-weight: 400; }
+.hint { display: block; font-size: 11px; color: #a19b93; margin-top: 4px; line-height: 1.5; }
+
+.field input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(to right, var(--text) var(--pct, 0%), #e6e4e0 var(--pct, 0%));
+  outline: none;
+  cursor: pointer;
+}
+.field input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--text);
+  cursor: grab;
+}
+.field input[type="range"]::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--text);
+  cursor: grab;
+}
+.field input[type="range"]:disabled { opacity: 0.45; cursor: default; }
+
+.chartWrap { position: relative; height: 340px; }
+@media (max-width: 640px) { .chartWrap { height: 280px; } }
+
+/* 指标卡 */
+.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+@media (max-width: 860px) { .metrics { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 420px) { .metrics { grid-template-columns: 1fr; } }
+
+.metric {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 12px 14px;
+}
+.metric .k { font-size: 11.5px; color: var(--muted); margin-bottom: 3px; }
+.metric .v {
+  font-size: 23px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
+}
+.metric .v small { font-size: 12px; font-weight: 400; color: var(--muted); letter-spacing: 0; margin-left: 3px; }
+.metric .d { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.metric.bad .v { color: var(--accent); }
+.metric.good .v { color: var(--ok); }
+.metric.neutral .v { color: var(--text); }
+.metric.bad { border-color: #f0d9d4; background: #fffbfa; }
+.metric.good { border-color: #d8e9de; background: #fafdfa; }
+
+/* 参数区分组标题 */
+.group { margin-bottom: 15px; }
+.groupTitle {
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 9px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* 案例卡 */
+.case {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  padding: 17px;
+  margin-bottom: 15px;
+}
+.case h3 { margin: 0 0 3px; font-size: 16px; }
+.case .tag { font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-left: 8px; vertical-align: 2px; }
+.case .tag.conservative { background: var(--ok-soft); color: var(--ok); }
+.case .tag.balanced { background: #f2f0ec; color: var(--muted); }
+.case .tag.aggressive { background: var(--accent-soft); color: var(--accent); }
+.case .params { font-size: 12.5px; color: var(--muted); margin: 8px 0 0; }
+.case .comment {
+  background: #faf9f7;
+  border-left: 2px solid var(--border);
+  padding: 10px 13px;
+  border-radius: 0 7px 7px 0;
+  font-size: 13px;
+  margin-top: 13px;
+}
+.case .comment b {
+  display: block;
+  font-size: 11.5px;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.case .verdict { margin-top: 12px; font-size: 13px; }
+.case .verdict .flag {
+  display: inline-block;
+  font-size: 11.5px;
+  padding: 1px 7px;
+  border-radius: 4px;
+  margin-right: 6px;
+}
+.case .verdict .flag.ok { background: var(--ok-soft); color: var(--ok); }
+.case .verdict .flag.off { background: #fdf7ec; color: #7a5514; }
+
+/* 敏感性表 */
+.sensTable td.num { font-variant-numeric: tabular-nums; }
+.barCell { min-width: 110px; }
+.barTrack { height: 6px; background: #f0eee9; border-radius: 3px; overflow: hidden; }
+.barTrack > i { display: block; height: 100%; border-radius: 3px; }
+
+.loading {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: -1px;
+  margin-right: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
