@@ -1,0 +1,155 @@
+{
+  "generatedBy": "scripts/verify.mjs",
+  "generatedAt": "2026-09-14",
+  "config": {
+    "trials": 10000,
+    "seed": 20260914,
+    "note": "同一种子下结果完全可复现"
+  },
+  "elapsedMs": 19566,
+  "cases": [
+    {
+      "id": "case1_conservative",
+      "name": "保守型",
+      "params": {
+        "initialBankroll": 20000,
+        "buyIn": 500,
+        "winRate": 0.53,
+        "variance": 8,
+        "sessions": 500,
+        "targetBankroll": 30000
+      },
+      "buyInCount": 40,
+      "expectedSessionProfit": 42,
+      "bustRatePct": 2.64,
+      "reachTargetRatePct": 75.6,
+      "medianMaxDrawdownPct": 36.16,
+      "p90MaxDrawdownPct": 69.78,
+      "medianBustSession": 260.5,
+      "bustCount": 264,
+      "medianFinal": 40756.66,
+      "meanFinal": 40696.97,
+      "p10Final": 20609.22,
+      "p90Final": 61207.52
+    },
+    {
+      "id": "case2_balanced",
+      "name": "平衡型",
+      "params": {
+        "initialBankroll": 10000,
+        "buyIn": 500,
+        "winRate": 0.52,
+        "variance": 10,
+        "sessions": 500,
+        "targetBankroll": 20000
+      },
+      "buyInCount": 20,
+      "expectedSessionProfit": 30,
+      "bustRatePct": 29.61,
+      "reachTargetRatePct": 54.23,
+      "medianMaxDrawdownPct": 70.91,
+      "p90MaxDrawdownPct": 100,
+      "medianBustSession": 137,
+      "bustCount": 2961,
+      "medianFinal": 22418.13,
+      "meanFinal": 21947.11,
+      "p10Final": 0,
+      "p90Final": 46567.07
+    },
+    {
+      "id": "case3_aggressive",
+      "name": "激进型",
+      "params": {
+        "initialBankroll": 5000,
+        "buyIn": 500,
+        "winRate": 0.54,
+        "variance": 15,
+        "sessions": 500,
+        "targetBankroll": 15000
+      },
+      "buyInCount": 10,
+      "expectedSessionProfit": 70,
+      "bustRatePct": 42.69,
+      "reachTargetRatePct": 55.86,
+      "medianMaxDrawdownPct": 84.05,
+      "p90MaxDrawdownPct": 100,
+      "medianBustSession": 32,
+      "bustCount": 4269,
+      "medianFinal": 26996.86,
+      "meanFinal": 26782.19,
+      "p10Final": 0,
+      "p90Final": 63413.83
+    }
+  ],
+  "sensitivity": {
+    "buyIn": [
+      {
+        "buyIn": 250,
+        "buyInCount": 40,
+        "bustRatePct": 7.04,
+        "reachTargetRatePct": 38.47,
+        "medianFinal": 17457.63
+      },
+      {
+        "buyIn": 400,
+        "buyInCount": 25,
+        "bustRatePct": 21.27,
+        "reachTargetRatePct": 52.83,
+        "medianFinal": 21113.52
+      },
+      {
+        "buyIn": 500,
+        "buyInCount": 20,
+        "bustRatePct": 29.61,
+        "reachTargetRatePct": 54.23,
+        "medianFinal": 22418.13
+      },
+      {
+        "buyIn": 700,
+        "buyInCount": 14,
+        "bustRatePct": 43.42,
+        "reachTargetRatePct": 50.11,
+        "medianFinal": 20130.01
+      },
+      {
+        "buyIn": 1000,
+        "buyInCount": 10,
+        "bustRatePct": 56.07,
+        "reachTargetRatePct": 41.51,
+        "medianFinal": 0
+      }
+    ],
+    "winRate": [
+      {
+        "winRatePct": 48,
+        "bustRatePct": 82.11,
+        "reachTargetRatePct": 5.98,
+        "medianFinal": 0
+      },
+      {
+        "winRatePct": 50,
+        "bustRatePct": 56.91,
+        "reachTargetRatePct": 23.52,
+        "medianFinal": 0
+      },
+      {
+        "winRatePct": 52,
+        "bustRatePct": 29.61,
+        "reachTargetRatePct": 54.23,
+        "medianFinal": 22418.13
+      },
+      {
+        "winRatePct": 55,
+        "bustRatePct": 7.59,
+        "reachTargetRatePct": 89.73,
+        "medianFinal": 47064.22
+      },
+      {
+        "winRatePct": 60,
+        "bustRatePct": 0.6,
+        "reachTargetRatePct": 99.4,
+        "medianFinal": 84980.14
+      }
+    ]
+  }
+}

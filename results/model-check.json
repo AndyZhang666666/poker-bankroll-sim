@@ -1,0 +1,179 @@
+{
+  "generatedBy": "scripts/check-model.mjs",
+  "generatedAt": "2026-09-14",
+  "summary": {
+    "total": 21,
+    "passed": 21,
+    "failed": 0
+  },
+  "cases": [
+    {
+      "name": "胜率100%+方差0：100场后资金 = 10000 + 500×100 = 60000",
+      "expected": 60000,
+      "actual": 60000,
+      "tolerance": 1e-9,
+      "pass": true,
+      "note": "每场收益恒等于买入"
+    },
+    {
+      "name": "同上：最大回撤 = 0",
+      "expected": 0,
+      "actual": 0,
+      "tolerance": 1e-12,
+      "pass": true,
+      "note": "一路向上没有回撤"
+    },
+    {
+      "name": "同上：不破产",
+      "expected": null,
+      "actual": null,
+      "tolerance": 0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "同上 · 蒙特卡洛：破产率 = 0",
+      "expected": 0,
+      "actual": 0,
+      "tolerance": 0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "同上 · 蒙特卡洛：达标率(目标 20000) = 1",
+      "expected": 1,
+      "actual": 1,
+      "tolerance": 0,
+      "pass": true,
+      "note": "第 20 场就到 20000"
+    },
+    {
+      "name": "胜率0%+方差0：第 20 场后资金归零",
+      "expected": 0,
+      "actual": 0,
+      "tolerance": 1e-9,
+      "pass": true,
+      "note": "20 个买入打完"
+    },
+    {
+      "name": "同上：第 19 场后还剩一个买入 500",
+      "expected": 500,
+      "actual": 500,
+      "tolerance": 1e-9,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "同上：破产场次 = 20",
+      "expected": 20,
+      "actual": 20,
+      "tolerance": 0,
+      "pass": true,
+      "note": "首次为 0 的下标"
+    },
+    {
+      "name": "同上：最大回撤 = 100%",
+      "expected": 1,
+      "actual": 1,
+      "tolerance": 1e-12,
+      "pass": true,
+      "note": "从峰值 10000 跌到 0"
+    },
+    {
+      "name": "同上 · 蒙特卡洛：破产率 = 1",
+      "expected": 1,
+      "actual": 1,
+      "tolerance": 0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "同上 · 蒙特卡洛：破产场次中位数 = 20",
+      "expected": 20,
+      "actual": 20,
+      "tolerance": 0,
+      "pass": true,
+      "note": "所有路径都在第 20 场破产"
+    },
+    {
+      "name": "起始 400 < 买入 500：第 1 场即破产",
+      "expected": 1,
+      "actual": 1,
+      "tolerance": 0,
+      "pass": true,
+      "note": "没钱上桌"
+    },
+    {
+      "name": "单场期望收益解析解 = 500 × (2×0.52−1) × (1+0.5) = 30",
+      "expected": 30,
+      "actual": 30.00000000000003,
+      "tolerance": 1e-9,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "200 万次单场抽样均值 ≈ 解析解 30（容差 2）",
+      "expected": 30.00000000000003,
+      "actual": 29.779236779637362,
+      "tolerance": 2,
+      "pass": true,
+      "note": "验证 rng 均匀性与公式实现一致"
+    },
+    {
+      "name": "同种子两次 bustRate 完全一致",
+      "expected": 0.12,
+      "actual": 0.12,
+      "tolerance": 0,
+      "pass": true,
+      "note": "results/ 可复现的前提"
+    },
+    {
+      "name": "同种子两次 medianFinal 完全一致",
+      "expected": 13110.87777488865,
+      "actual": 13110.87777488865,
+      "tolerance": 0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "换种子后 medianFinal 应不同",
+      "expected": true,
+      "actual": true,
+      "tolerance": 0,
+      "pass": true,
+      "note": "确认种子真的生效"
+    },
+    {
+      "name": "买入 250 → 500 → 1000，破产率单调不降",
+      "expected": true,
+      "actual": true,
+      "tolerance": 0,
+      "pass": true,
+      "note": "0.0025 ≤ 0.108 ≤ 0.3995"
+    },
+    {
+      "name": "胜率 50% → 55% → 60%，破产率单调不升",
+      "expected": true,
+      "actual": true,
+      "tolerance": 0,
+      "pass": true,
+      "note": "0.193 ≥ 0.043 ≥ 0.0045"
+    },
+    {
+      "name": "破产后余下场次全部为 0",
+      "expected": true,
+      "actual": true,
+      "tolerance": 0,
+      "pass": true,
+      "note": "500 条路径逐个检查"
+    },
+    {
+      "name": "破产率 + 达标率 ≤ 1",
+      "expected": true,
+      "actual": true,
+      "tolerance": 0,
+      "pass": true,
+      "note": "0.816 + 0.182"
+    }
+  ]
+}
