@@ -12,6 +12,7 @@ import {
   bustSession,
   expectedSessionProfit,
 } from "../src/lib/simulator.js";
+import { ruinProbabilityAnalytic, normalCdf } from "../src/lib/analytic.js";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const cases = [];
@@ -112,6 +113,28 @@ const base = { initialBankroll: 10000, buyIn: 500, winRate: 0.52, variance: 10, 
   }
   check("破产后余下场次全部为 0", true, ok, 0, "500 条路径逐个检查");
   check("破产率 + 达标率 ≤ 1", true, mc.bustRate + mc.reachTargetRate <= 1 + 1e-12, 0, `${mc.bustRate} + ${mc.reachTargetRate}`);
+}
+
+// ── H. 解析解：胜率 50%、方差 0 → 公平随机游走的精确破产概率 ────────
+// 无漂移（μ=0）时「T 场内是否穿越 0」的布朗近似退化为 P = 2·Φ(−x₀/(σ√T))。
+// 更干净的一条：x₀ = 20 个买入、μ = 0、σ = 1（方差 0 时每场正好 ±1 个买入）、
+// T → ∞ 时最终必被吸收，P → 1。取 T 使 x₀/(σ√T) 很小即可逼近。
+// 这里用有限 T 的闭式值交叉核对，不依赖蒙特卡洛。
+{
+  const p = { initialBankroll: 20000, buyIn: 1000, winRate: 0.5, variance: 0, sessions: 500 };
+  const a = ruinProbabilityAnalytic(p);
+  check("解析解 · 公平游走 x₀=20, μ=0, σ=1 → P = 2·Φ(−20/√500)", 2 * normalCdf(-20 / Math.sqrt(500)), a.prob, 1e-12, "");
+  check("解析解 · 胜率 50% + 方差 0 时漂移 μ 精确为 0", 0, a.mu, 1e-15, "");
+  check("解析解 · 同上 σ 精确为 1", 1, a.sigma, 1e-12, "每场 ±1 个买入");
+  const mc = runMonteCarlo(p, { trials: 5000, seed: 99 });
+  check("同上 · 蒙特卡洛破产率与解析解相差 < 3 个百分点", a.prob, mc.bustRate, 0.03, `解析 ${a.prob.toFixed(4)} vs 模拟 ${mc.bustRate.toFixed(4)}`);
+
+  // 正漂移必须比零漂移更不容易破产
+  const pos = ruinProbabilityAnalytic({ ...p, winRate: 0.55 });
+  check("解析解 · 胜率 55% 的破产概率低于 50%", true, pos.prob < a.prob, 0, `${pos.prob.toFixed(4)} < ${a.prob.toFixed(4)}`);
+  // 负漂移更危险
+  const neg = ruinProbabilityAnalytic({ ...p, winRate: 0.45 });
+  check("解析解 · 胜率 45% 的破产概率高于 50%", true, neg.prob > a.prob, 0, `${neg.prob.toFixed(4)} > ${a.prob.toFixed(4)}`);
 }
 
 const passed = cases.filter((c) => c.pass).length;

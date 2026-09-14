@@ -6,7 +6,7 @@
     "seed": 20260914,
     "note": "同一种子下结果完全可复现"
   },
-  "elapsedMs": 19566,
+  "elapsedMs": 18687,
   "cases": [
     {
       "id": "case1_conservative",
@@ -22,6 +22,8 @@
       "buyInCount": 40,
       "expectedSessionProfit": 42,
       "bustRatePct": 2.64,
+      "bustRateAnalyticPct": 2.32,
+      "bustRateDiffPctPoints": 0.32,
       "reachTargetRatePct": 75.6,
       "medianMaxDrawdownPct": 36.16,
       "p90MaxDrawdownPct": 69.78,
@@ -46,6 +48,8 @@
       "buyInCount": 20,
       "expectedSessionProfit": 30,
       "bustRatePct": 29.61,
+      "bustRateAnalyticPct": 29.11,
+      "bustRateDiffPctPoints": 0.5,
       "reachTargetRatePct": 54.23,
       "medianMaxDrawdownPct": 70.91,
       "p90MaxDrawdownPct": 100,
@@ -70,6 +74,8 @@
       "buyInCount": 10,
       "expectedSessionProfit": 70,
       "bustRatePct": 42.69,
+      "bustRateAnalyticPct": 41.51,
+      "bustRateDiffPctPoints": 1.18,
       "reachTargetRatePct": 55.86,
       "medianMaxDrawdownPct": 84.05,
       "p90MaxDrawdownPct": 100,

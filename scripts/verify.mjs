@@ -7,6 +7,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { runMonteCarlo, expectedSessionProfit } from "../src/lib/simulator.js";
 import { PRESET_CASES } from "../src/lib/presets.js";
+import { ruinProbabilityAnalytic, normalCdf } from "../src/lib/analytic.js";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const TRIALS = 10_000;
@@ -18,6 +19,7 @@ const money = (x) => Number(x.toFixed(2));
 const t0 = Date.now();
 const results = PRESET_CASES.map((preset) => {
   const mc = runMonteCarlo(preset.params, { trials: TRIALS, seed: SEED, keepPaths: 0 });
+  const analytic = ruinProbabilityAnalytic(preset.params);
   return {
     id: preset.id,
     name: preset.name,
@@ -25,6 +27,10 @@ const results = PRESET_CASES.map((preset) => {
     buyInCount: Math.floor(preset.params.initialBankroll / preset.params.buyIn),
     expectedSessionProfit: money(expectedSessionProfit(preset.params)),
     bustRatePct: pct(mc.bustRate),
+    // 布朗运动首次穿越 0 的解析解，用来独立交叉核对蒙特卡洛。
+    // 两者吻合 = 模拟没写错；不吻合就说明随机性实现或判定逻辑有问题。
+    bustRateAnalyticPct: pct(analytic.prob),
+    bustRateDiffPctPoints: pct(Math.abs(mc.bustRate - analytic.prob)),
     reachTargetRatePct: pct(mc.reachTargetRate),
     medianMaxDrawdownPct: pct(mc.medianMaxDrawdown),
     p90MaxDrawdownPct: pct(mc.p90MaxDrawdown),
