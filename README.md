@@ -127,7 +127,7 @@ Var[单场] = 买入² × [1 + f + f²/3 − ((2p−1)(1+f/2))²]   (f = 方差/
 npm install
 npm run dev          # http://localhost:3000/poker-bankroll-sim/  ← 注意 basePath，根路径会 404
 npm run build        # 静态导出到 out/，自动写入 .nojekyll
-npm run preview      # 预览 out/（需要 npx serve）
+npm run preview      # 本地预览 out/，路径与 Pages 完全一致
 
 # 校验脚本
 node scripts/check-model.mjs   # 27 项模型单元校验 → results/model-check.json
@@ -170,7 +170,7 @@ src/
 ├── lib/            simulator.js（核心，纯 JS 便于 Node 复用）
 │                   analytic.js（解析解）/ presets.js / types.ts / hooks.ts
 └── styles/         Simulator.module.css
-scripts/            check-model.mjs / verify.mjs / postbuild.mjs
+scripts/            check-model.mjs / verify.mjs / postbuild.mjs / preview.mjs
 results/            model-check.json / verify.json
                     case1_conservative.json / case2_balanced.json / case3_aggressive.json
 ```

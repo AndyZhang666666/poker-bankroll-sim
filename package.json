@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build && node scripts/postbuild.mjs",
     "start": "next start",
-    "preview": "npx serve out",
+    "preview": "node scripts/preview.mjs",
     "verify": "node scripts/verify.mjs",
     "check": "node scripts/check-model.mjs && node scripts/verify.mjs"
   },
