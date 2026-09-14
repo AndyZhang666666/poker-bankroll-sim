@@ -6,7 +6,6 @@
     "seed": 20260914,
     "note": "同一种子下结果完全可复现"
   },
-  "elapsedMs": 18687,
   "cases": [
     {
       "id": "case1_conservative",

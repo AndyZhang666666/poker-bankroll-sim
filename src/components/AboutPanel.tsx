@@ -12,6 +12,7 @@ interface Props {
 
 export default function AboutPanel({ trials, seed }: Props) {
   const v = verifyData as unknown as {
+    generatedAt: string;
     config: { trials: number; seed: number };
     cases: Array<{
       id: string;
@@ -31,7 +32,6 @@ export default function AboutPanel({ trials, seed }: Props) {
       buyIn: Array<{ buyIn: number; buyInCount: number; bustRatePct: number; medianFinal: number }>;
       winRate: Array<{ winRatePct: number; bustRatePct: number; medianFinal: number }>;
     };
-    elapsedMs: number;
   };
 
   const c = checkData as unknown as { summary: { total: number; passed: number } };
@@ -211,8 +211,7 @@ x₀ = 起始资金 / 买入           以买入为单位的起始资金`}</div>
           <ul className="tight" style={{ marginBottom: 0 }}>
             <li>页面每次模拟：{trials.toLocaleString()} 条路径，种子 {seed}</li>
             <li>
-              校验脚本：{v.config.trials.toLocaleString()} 条路径，种子 {v.config.seed}，耗时{" "}
-              {(v.elapsedMs / 1000).toFixed(1)}s
+              校验脚本：{v.config.trials.toLocaleString()} 条路径，种子 {v.config.seed}，生成于 {v.generatedAt}
             </li>
             <li>全部计算在浏览器本地完成，不上传任何数据，不连服务端</li>
           </ul>

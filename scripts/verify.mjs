@@ -66,11 +66,13 @@ const sweepWinRate = [0.48, 0.5, 0.52, 0.55, 0.6].map((winRate) => {
   };
 });
 
+const elapsedMs = Date.now() - t0;
+// 故意不把耗时写进 JSON —— 它每次重跑都不同，会让 results/ 每次都产生一行无意义 diff，
+// 反而掩盖了「同一种子下所有数字完全一致」这个最有说服力的事实。
 const payload = {
   generatedBy: "scripts/verify.mjs",
   generatedAt: new Date().toISOString().slice(0, 10),
   config: { trials: TRIALS, seed: SEED, note: "同一种子下结果完全可复现" },
-  elapsedMs: Date.now() - t0,
   cases: results,
   sensitivity: { buyIn: sweepBuyIn, winRate: sweepWinRate },
 };
@@ -96,7 +98,7 @@ for (const r of results) {
   );
 }
 
-console.log(`三场景 × ${TRIALS} 次，耗时 ${payload.elapsedMs}ms\n`);
+console.log(`三场景 × ${TRIALS} 次，耗时 ${elapsedMs}ms\n`);
 for (const r of results) {
   console.log(`${r.name}（${r.buyInCount} 个买入，胜率 ${r.params.winRate * 100}%，方差 ${r.params.variance}）`);
   console.log(`  破产率 ${r.bustRatePct}%  达标率 ${r.reachTargetRatePct}%  回撤中位数 ${r.medianMaxDrawdownPct}%`);
