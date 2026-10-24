@@ -1,9 +1,9 @@
 {
   "generatedBy": "scripts/check-model.mjs",
-  "generatedAt": "2026-09-14",
+  "modelVersion": "retained-balance-v2-2026-10-24",
   "summary": {
-    "total": 27,
-    "passed": 27,
+    "total": 28,
+    "passed": 28,
     "failed": 0
   },
   "cases": [
@@ -96,12 +96,20 @@
       "note": "所有路径都在第 20 场破产"
     },
     {
-      "name": "起始 400 < 买入 500：第 1 场即破产",
-      "expected": 1,
-      "actual": 1,
+      "name": "起始 400 < 买入 500：开始时即停止",
+      "expected": 0,
+      "actual": 0,
       "tolerance": 0,
       "pass": true,
-      "note": "没钱上桌"
+      "note": "模型 v2 不把剩余余额清零"
+    },
+    {
+      "name": "起始不足时仍保留 400",
+      "expected": 400,
+      "actual": 400,
+      "tolerance": 0,
+      "pass": true,
+      "note": "停止不是余额归零"
     },
     {
       "name": "单场期望收益解析解 = 500 × (2×0.52−1) × (1+0.5) = 30",
@@ -157,10 +165,10 @@
       "actual": true,
       "tolerance": 0,
       "pass": true,
-      "note": "0.193 ≥ 0.043 ≥ 0.0045"
+      "note": "0.196 ≥ 0.044 ≥ 0.0045"
     },
     {
-      "name": "破产后余下场次全部为 0",
+      "name": "停止后余下场次保留停止时余额",
       "expected": true,
       "actual": true,
       "tolerance": 0,
@@ -177,7 +185,7 @@
     },
     {
       "name": "解析解 · 公平游走 x₀=20, μ=0, σ=1 → P = 2·Φ(−20/√500)",
-      "expected": 0.3710932976579071,
+      "expected": 0.37109329765790716,
       "actual": 0.3710932976579071,
       "tolerance": 1e-12,
       "pass": true,

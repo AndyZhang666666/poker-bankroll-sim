@@ -1,8 +1,8 @@
 // 破产概率的解析近似。
 //
-// 为什么要这个文件：蒙特卡洛自己没法证明自己对。跑出 29% 的破产率，可能是模型对，
-// 也可能是随机数写错了、破产判定写错了。有了解析解就能交叉核对 —— 两条完全不同的
-// 路径（数值模拟 vs 闭式公式）给出同一个数，才说明模拟可信。
+// 保留连续首次穿越零的数学近似，作为源码中的对照。
+// 与离散“余额不足下一轮额度而停止”不是同一事件；近似吻合不证明实现正确，
+// 差异也不能直接归因给实现错误。主界面不混合展示这两个事件。
 //
 // ── 推导 ─────────────────────────────────────────────────────────────
 // 把「每场收益」看成一个随机游走步长 X（单位：买入）：
@@ -20,23 +20,23 @@
 // 其中 x₀ 以「买入个数」为单位。这是标准的带漂移布朗运动首次穿越分布。
 //
 // ── 适用边界 ─────────────────────────────────────────────────────────
-// 布朗逼近要求 T 足够大、单步相对 x₀ 足够小。本项目里 x₀ = 10~40 个买入、
-// T = 500 场，满足条件。实测三个预设场景的解析值与 10,000 次蒙特卡洛差
-// 0.3~1.2 个百分点，误差主要来自布朗逼近而非实现。
-// 如果 x₀ 很小（如 2 个买入）或 T 很小（如 20 场），解析解会偏保守，别用它。
+// 需要大场次、小相对步长等逼近条件；不为所有页面参数承诺误差范围或偏差方向。
 
 /** 标准正态 CDF，Abramowitz & Stegun 26.2.17，绝对误差 < 7.5e-8。 */
 export function normalCdf(z) {
-  if (z < 0) return 1 - normalCdf(-z);
-  const t = 1 / (1 + 0.2316419 * z);
+  if (z === Infinity) return 1;
+  if (z === -Infinity) return 0;
+  const abs = Math.abs(z);
+  const t = 1 / (1 + 0.2316419 * abs);
   const d = 0.3989422804014327 * Math.exp((-z * z) / 2);
-  return (
-    1 -
+  const tail =
     d *
+    t *
+    (0.31938153 +
       t *
-      (0.319381530 +
-        t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))))
-  );
+        (-0.356563782 +
+          t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))));
+  return z < 0 ? tail : 1 - tail;
 }
 
 /**
@@ -56,8 +56,25 @@ export function ruinProbabilityAnalytic(params) {
   const sigma = Math.sqrt(varianceStep);
   const sigmaT = sigma * Math.sqrt(sessions);
 
+  if (varianceStep <= 1e-15)
+    return {
+      prob: mu < 0 && x0 + mu * sessions <= 0 ? 1 : 0,
+      x0,
+      mu,
+      sigma: 0,
+      drift: mu < 0 ? "负漂移" : "正漂移",
+    };
+
   const a = normalCdf((-x0 - mu * sessions) / sigmaT);
-  const b = Math.exp((-2 * mu * x0) / varianceStep) * normalCdf((-x0 + mu * sessions) / sigmaT);
+  const z = (-x0 + mu * sessions) / sigmaT;
+  const logPhi =
+    z < -8
+      ? (-z * z) / 2 -
+        Math.log(-z) -
+        0.5 * Math.log(2 * Math.PI) +
+        Math.log(1 - 1 / (z * z) + 3 / z ** 4 - 15 / z ** 6)
+      : Math.log(normalCdf(z));
+  const b = Math.exp(Math.min(0, (-2 * mu * x0) / varianceStep + logPhi));
   const prob = Math.min(1, Math.max(0, a + b));
 
   return {

@@ -16,9 +16,14 @@ export function useDebounced<T>(value: T, delay = 180): T {
 
 /** 把昂贵的计算放在 debounce 之后，并给出"正在重算"的状态。 */
 export function useComputed<T>(compute: () => T, deps: unknown[], delay = 180) {
-  const [state, setState] = useState<{ value: T | null; pending: boolean }>({
+  const [state, setState] = useState<{
+    value: T | null;
+    pending: boolean;
+    error: string | null;
+  }>({
     value: null,
     pending: true,
+    error: null,
   });
   const first = useRef(true);
 
@@ -26,12 +31,28 @@ export function useComputed<T>(compute: () => T, deps: unknown[], delay = 180) {
     if (first.current) {
       // 首屏同步跑一次，别让用户看到 loading
       first.current = false;
-      setState({ value: compute(), pending: false });
+      try {
+        setState({ value: compute(), pending: false, error: null });
+      } catch (e) {
+        setState({
+          value: null,
+          pending: false,
+          error: e instanceof Error ? e.message : "计算失败，请恢复默认重试。",
+        });
+      }
       return;
     }
-    setState((s) => ({ value: s.value, pending: true }));
+    setState((s) => ({ ...s, pending: true }));
     const id = setTimeout(() => {
-      setState({ value: compute(), pending: false });
+      try {
+        setState({ value: compute(), pending: false, error: null });
+      } catch (e) {
+        setState((s) => ({
+          ...s,
+          pending: false,
+          error: e instanceof Error ? e.message : "计算失败，请恢复默认重试。",
+        }));
+      }
     }, delay);
     return () => clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,15 +64,23 @@ export function useComputed<T>(compute: () => T, deps: unknown[], delay = 180) {
 export function useTabs(initial: string) {
   const [tab, setTab] = useState(initial);
   useEffect(() => {
-    const h = window.location.hash.replace("#", "");
-    if (h) setTab(h);
+    const read = () => {
+      const h = window.location.hash.slice(1);
+      setTab(["sim", "risk", "cases", "about"].includes(h) ? h : initial);
+    };
+    read();
+    window.addEventListener("hashchange", read);
+    return () => window.removeEventListener("hashchange", read);
   }, []);
   const go = useCallback((id: string) => {
+    if (!["sim", "risk", "cases", "about"].includes(id)) return;
     setTab(id);
-    if (typeof window !== "undefined") window.history.replaceState(null, "", `#${id}`);
+    if (typeof window !== "undefined")
+      window.history.replaceState(null, "", `#${id}`);
   }, []);
   return { tab, go };
 }
 
 export const fmtMoney = (v: number) => Math.round(v).toLocaleString("zh-CN");
-export const fmtPct = (v: number, digits = 1) => `${(v * 100).toFixed(digits)}%`;
+export const fmtPct = (v: number, digits = 1) =>
+  `${(v * 100).toFixed(digits)}%`;

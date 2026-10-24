@@ -17,6 +17,7 @@ export interface MonteCarloOptions {
   trials?: number;
   seed?: number;
   keepPaths?: number;
+  trajectories?: boolean;
 }
 
 export interface MonteCarloResult {
@@ -24,6 +25,12 @@ export interface MonteCarloResult {
   config: Required<MonteCarloOptions>;
   bustRate: number;
   reachTargetRate: number;
+  everReachTargetRate: number;
+  zeroRate: number;
+  stopInterval: number[];
+  everReachInterval: number[];
+  terminalReachInterval: number[];
+  modelVersion: string;
   medianMaxDrawdown: number;
   p90MaxDrawdown: number;
   medianBustSession: number | null;

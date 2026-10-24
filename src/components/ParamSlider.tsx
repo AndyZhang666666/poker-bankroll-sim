@@ -1,6 +1,6 @@
 "use client";
 
-import { CSSProperties } from "react";
+import { CSSProperties, useId } from "react";
 import styles from "@/styles/Simulator.module.css";
 
 interface Props {
@@ -32,14 +32,24 @@ export default function ParamSlider({
   disabled,
 }: Props) {
   const pct = max > min ? ((value - min) / (max - min)) * 100 : 0;
+  const hintId = useId();
   return (
-    <label className={styles.field} style={{ "--pct": `${pct}%` } as CSSProperties}>
+    <label
+      className={styles.field}
+      style={{ "--pct": `${pct}%` } as CSSProperties}
+    >
       <span className={styles.fieldHead}>
         <span>{label}</span>
-        <b>{format ? format(value) : value}{aside ? <em>（{aside}）</em> : null}</b>
+        <b>
+          {format ? format(value) : value}
+          {aside ? <em>（{aside}）</em> : null}
+        </b>
       </span>
       <input
         type="range"
+        aria-label={label}
+        aria-valuetext={format ? format(value) : String(value)}
+        aria-describedby={hint ? hintId : undefined}
         min={min}
         max={max}
         step={step}
@@ -47,7 +57,11 @@ export default function ParamSlider({
         disabled={disabled}
         onChange={(e) => onChange(Number(e.target.value))}
       />
-      {hint ? <span className={styles.hint}>{hint}</span> : null}
+      {hint ? (
+        <span className={styles.hint} id={hintId}>
+          {hint}
+        </span>
+      ) : null}
     </label>
   );
 }

@@ -10,6 +10,8 @@ import {
   runMonteCarlo,
   maxDrawdown,
   bustSession,
+  stopSession,
+  MODEL_VERSION,
   expectedSessionProfit,
 } from "../src/lib/simulator.js";
 import { ruinProbabilityAnalytic, normalCdf } from "../src/lib/analytic.js";
@@ -58,7 +60,8 @@ const base = { initialBankroll: 10000, buyIn: 500, winRate: 0.52, variance: 10, 
 {
   const p = { ...base, initialBankroll: 400 };
   const path = simulatePath(p, mulberry32(1));
-  check("起始 400 < 买入 500：第 1 场即破产", 1, bustSession(path), 0, "没钱上桌");
+  check("起始 400 < 买入 500：开始时即停止", 0, stopSession(path,500), 0, "模型 v2 不把剩余余额清零");
+  check("起始不足时仍保留 400",400,path.at(-1),0,"停止不是余额归零");
 }
 
 // ── D. 单场期望收益的解析解 vs 大样本均值 ──────────────────────────
@@ -108,10 +111,10 @@ const base = { initialBankroll: 10000, buyIn: 500, winRate: 0.52, variance: 10, 
   const mc = runMonteCarlo({ ...base, initialBankroll: 2000, sessions: 300 }, { trials: 500, seed: 9, keepPaths: 500 });
   let ok = true;
   for (const path of mc.samplePaths) {
-    const b = bustSession(path);
-    if (b !== null) for (let i = b; i < path.length; i++) if (path[i] !== 0) ok = false;
+    const b = stopSession(path,500);
+    if (b !== null) for (let i = b; i < path.length; i++) if (path[i] !== path[b]) ok = false;
   }
-  check("破产后余下场次全部为 0", true, ok, 0, "500 条路径逐个检查");
+  check("停止后余下场次保留停止时余额", true, ok, 0, "500 条路径逐个检查");
   check("破产率 + 达标率 ≤ 1", true, mc.bustRate + mc.reachTargetRate <= 1 + 1e-12, 0, `${mc.bustRate} + ${mc.reachTargetRate}`);
 }
 
@@ -141,7 +144,7 @@ const passed = cases.filter((c) => c.pass).length;
 mkdirSync(resolve(ROOT, "results"), { recursive: true });
 writeFileSync(
   resolve(ROOT, "results/model-check.json"),
-  JSON.stringify({ generatedBy: "scripts/check-model.mjs", generatedAt: new Date().toISOString().slice(0, 10), summary: { total: cases.length, passed, failed: cases.length - passed }, cases }, null, 2) + "\n",
+  JSON.stringify({ generatedBy: "scripts/check-model.mjs", modelVersion: MODEL_VERSION, summary: { total: cases.length, passed, failed: cases.length - passed }, cases }, null, 2) + "\n",
 );
 console.log(`手算校验：${passed}/${cases.length} 通过`);
 for (const c of cases.filter((x) => !x.pass)) console.log(`  ✗ ${c.name}\n    预期 ${c.expected}，实际 ${c.actual}`);

@@ -14,7 +14,8 @@ export const PRESET_CASES = [
       sessions: 500,
       targetBankroll: 30000,
     },
-    comment: "40 个买入，胜率 53%，波动偏低。破产几乎不可能，代价是资金增长慢、达标要靠场次堆。",
+    comment:
+      "较高的起始额度比搭配较低波动。即使停止比例低，也不能用它证明真实牌局安全；输入假设并未经过真实数据校准。",
   },
   {
     id: "case2_balanced",
@@ -29,7 +30,8 @@ export const PRESET_CASES = [
       sessions: 500,
       targetBankroll: 20000,
     },
-    comment: "20 个买入 —— 就是网上那条经验规则。这个模拟器主要想回答的就是它到底够不够。",
+    comment:
+      "起始余额相当于 20 个基础额度。重点比较曾经达到目标与最终仍达标的差距，而不是把一个经验倍数当作安全保证。",
   },
   {
     id: "case3_aggressive",
@@ -44,6 +46,7 @@ export const PRESET_CASES = [
       sessions: 500,
       targetBankroll: 15000,
     },
-    comment: "只有 10 个买入，靠更高的胜率硬扛更大的波动。翻三倍和归零都不稀奇。",
+    comment:
+      "较低的额度比、更高的获胜假设与更大波动同时改变。先用这组参数观察分布，再到风险分析一次只改一个变量，避免把结果归因给单个因素。",
   },
 ];

@@ -1,6 +1,6 @@
 {
   "generatedBy": "scripts/verify.mjs",
-  "generatedAt": "2026-09-14",
+  "modelVersion": "retained-balance-v2-2026-10-24",
   "trials": 10000,
   "seed": 20260914,
   "id": "case1_conservative",
@@ -19,12 +19,14 @@
   "bustRateAnalyticPct": 2.32,
   "bustRateDiffPctPoints": 0.32,
   "reachTargetRatePct": 75.6,
+  "everReachTargetRatePct": 88.29,
+  "zeroRatePct": 0.59,
   "medianMaxDrawdownPct": 36.16,
   "p90MaxDrawdownPct": 69.78,
   "medianBustSession": 260.5,
   "bustCount": 264,
   "medianFinal": 40756.66,
-  "meanFinal": 40696.97,
+  "meanFinal": 40702.42,
   "p10Final": 20609.22,
   "p90Final": 61207.52
 }

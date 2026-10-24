@@ -79,7 +79,7 @@ export default function SensitivityChart({
       pointRadius: s.type === "bar" ? 0 : 3,
       pointBackgroundColor: s.color,
       fill: s.fill ?? false,
-      tension: 0.2,
+      tension: 0,
       type: s.type ?? "line",
       yAxisID: s.axis ?? "y",
     }));
@@ -91,28 +91,54 @@ export default function SensitivityChart({
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        animation: { duration: 600 },
+        animation: {
+          duration: matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? 0
+            : 200,
+        },
         interaction: { mode: "index", intersect: false },
         scales: {
           x: {
-            title: xTitle ? { display: true, text: xTitle, font: { size: 11 }, color: "#a19b93" } : undefined,
+            title: xTitle
+              ? {
+                  display: true,
+                  text: xTitle,
+                  font: { size: 11 },
+                  color: "#a19b93",
+                }
+              : undefined,
             ticks: { font: { size: 11 }, color: "#a19b93" },
             grid: { color: "#f2f0ec" },
           },
           y: {
+            min: ySuffix === "%" ? 0 : undefined,
+            max: ySuffix === "%" ? 100 : undefined,
             position: "left",
-            title: yTitle ? { display: true, text: yTitle, font: { size: 11 }, color: "#a19b93" } : undefined,
+            title: yTitle
+              ? {
+                  display: true,
+                  text: yTitle,
+                  font: { size: 11 },
+                  color: "#a19b93",
+                }
+              : undefined,
             ticks: {
               font: { size: 11 },
               color: "#a19b93",
-              callback: (v: string | number) => `${Number(v).toFixed(0)}${ySuffix}`,
+              callback: (v: string | number) =>
+                `${Number(v).toFixed(0)}${ySuffix}`,
             },
             grid: { color: "#f2f0ec" },
           },
           y1: y1Title
             ? {
                 position: "right",
-                title: { display: true, text: y1Title, font: { size: 11 }, color: "#a19b93" },
+                title: {
+                  display: true,
+                  text: y1Title,
+                  font: { size: 11 },
+                  color: "#a19b93",
+                },
                 ticks: {
                   font: { size: 11 },
                   color: "#a19b93",
@@ -130,7 +156,10 @@ export default function SensitivityChart({
           },
           tooltip: {
             callbacks: {
-              label: (c: { dataset: { label?: string; yAxisID?: string }; parsed: { y: number } }) => {
+              label: (c: {
+                dataset: { label?: string; yAxisID?: string };
+                parsed: { y: number };
+              }) => {
                 const v = c.parsed.y;
                 const suffix = c.dataset.yAxisID === "y1" ? "" : ySuffix;
                 return `${c.dataset.label}：${suffix ? v.toFixed(1) : Math.round(v).toLocaleString()}${suffix}`;

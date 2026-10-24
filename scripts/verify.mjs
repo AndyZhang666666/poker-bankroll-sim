@@ -5,7 +5,7 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { runMonteCarlo, expectedSessionProfit } from "../src/lib/simulator.js";
+import { runMonteCarlo, expectedSessionProfit, MODEL_VERSION } from "../src/lib/simulator.js";
 import { PRESET_CASES } from "../src/lib/presets.js";
 import { ruinProbabilityAnalytic, normalCdf } from "../src/lib/analytic.js";
 
@@ -18,7 +18,7 @@ const money = (x) => Number(x.toFixed(2));
 
 const t0 = Date.now();
 const results = PRESET_CASES.map((preset) => {
-  const mc = runMonteCarlo(preset.params, { trials: TRIALS, seed: SEED, keepPaths: 0 });
+  const mc = runMonteCarlo(preset.params, { trials: TRIALS, seed: SEED, keepPaths: 0, trajectories:false });
   const analytic = ruinProbabilityAnalytic(preset.params);
   return {
     id: preset.id,
@@ -28,10 +28,12 @@ const results = PRESET_CASES.map((preset) => {
     expectedSessionProfit: money(expectedSessionProfit(preset.params)),
     bustRatePct: pct(mc.bustRate),
     // 布朗运动首次穿越 0 的解析解，用来独立交叉核对蒙特卡洛。
-    // 两者吻合 = 模拟没写错；不吻合就说明随机性实现或判定逻辑有问题。
+    // 不同事件的近似对照，不把吻合当作正确性证明。
     bustRateAnalyticPct: pct(analytic.prob),
     bustRateDiffPctPoints: pct(Math.abs(mc.bustRate - analytic.prob)),
     reachTargetRatePct: pct(mc.reachTargetRate),
+    everReachTargetRatePct: pct(mc.everReachTargetRate),
+    zeroRatePct: pct(mc.zeroRate),
     medianMaxDrawdownPct: pct(mc.medianMaxDrawdown),
     p90MaxDrawdownPct: pct(mc.p90MaxDrawdown),
     medianBustSession: mc.medianBustSession,
@@ -47,7 +49,7 @@ const results = PRESET_CASES.map((preset) => {
 // 这是整个项目最有信息量的一张表 —— 买入从 250 涨到 1000，破产率不是线性上升的。
 const balanced = PRESET_CASES.find((c) => c.id === "case2_balanced").params;
 const sweepBuyIn = [250, 400, 500, 700, 1000].map((buyIn) => {
-  const mc = runMonteCarlo({ ...balanced, buyIn }, { trials: TRIALS, seed: SEED, keepPaths: 0 });
+  const mc = runMonteCarlo({ ...balanced, buyIn }, { trials: TRIALS, seed: SEED, keepPaths: 0, trajectories:false });
   return {
     buyIn,
     buyInCount: Math.floor(balanced.initialBankroll / buyIn),
@@ -57,7 +59,7 @@ const sweepBuyIn = [250, 400, 500, 700, 1000].map((buyIn) => {
   };
 });
 const sweepWinRate = [0.48, 0.5, 0.52, 0.55, 0.6].map((winRate) => {
-  const mc = runMonteCarlo({ ...balanced, winRate }, { trials: TRIALS, seed: SEED, keepPaths: 0 });
+  const mc = runMonteCarlo({ ...balanced, winRate }, { trials: TRIALS, seed: SEED, keepPaths: 0, trajectories:false });
   return {
     winRatePct: pct(winRate),
     bustRatePct: pct(mc.bustRate),
@@ -71,7 +73,7 @@ const elapsedMs = Date.now() - t0;
 // 反而掩盖了「同一种子下所有数字完全一致」这个最有说服力的事实。
 const payload = {
   generatedBy: "scripts/verify.mjs",
-  generatedAt: new Date().toISOString().slice(0, 10),
+  modelVersion: MODEL_VERSION,
   config: { trials: TRIALS, seed: SEED, note: "同一种子下结果完全可复现" },
   cases: results,
   sensitivity: { buyIn: sweepBuyIn, winRate: sweepWinRate },
@@ -87,7 +89,7 @@ for (const r of results) {
     JSON.stringify(
       {
         generatedBy: "scripts/verify.mjs",
-        generatedAt: payload.generatedAt,
+        modelVersion: MODEL_VERSION,
         trials: TRIALS,
         seed: SEED,
         ...r,

@@ -1,6 +1,6 @@
 {
   "generatedBy": "scripts/verify.mjs",
-  "generatedAt": "2026-09-14",
+  "modelVersion": "retained-balance-v2-2026-10-24",
   "config": {
     "trials": 10000,
     "seed": 20260914,
@@ -24,12 +24,14 @@
       "bustRateAnalyticPct": 2.32,
       "bustRateDiffPctPoints": 0.32,
       "reachTargetRatePct": 75.6,
+      "everReachTargetRatePct": 88.29,
+      "zeroRatePct": 0.59,
       "medianMaxDrawdownPct": 36.16,
       "p90MaxDrawdownPct": 69.78,
       "medianBustSession": 260.5,
       "bustCount": 264,
       "medianFinal": 40756.66,
-      "meanFinal": 40696.97,
+      "meanFinal": 40702.42,
       "p10Final": 20609.22,
       "p90Final": 61207.52
     },
@@ -46,17 +48,19 @@
       },
       "buyInCount": 20,
       "expectedSessionProfit": 30,
-      "bustRatePct": 29.61,
+      "bustRatePct": 29.62,
       "bustRateAnalyticPct": 29.11,
-      "bustRateDiffPctPoints": 0.5,
+      "bustRateDiffPctPoints": 0.51,
       "reachTargetRatePct": 54.23,
+      "everReachTargetRatePct": 71.22,
+      "zeroRatePct": 7.98,
       "medianMaxDrawdownPct": 70.91,
-      "p90MaxDrawdownPct": 100,
-      "medianBustSession": 137,
-      "bustCount": 2961,
+      "p90MaxDrawdownPct": 99.58,
+      "medianBustSession": 136.5,
+      "bustCount": 2962,
       "medianFinal": 22418.13,
-      "meanFinal": 21947.11,
-      "p10Final": 0,
+      "meanFinal": 22006.14,
+      "p10Final": 63.36,
       "p90Final": 46567.07
     },
     {
@@ -76,12 +80,14 @@
       "bustRateAnalyticPct": 41.51,
       "bustRateDiffPctPoints": 1.18,
       "reachTargetRatePct": 55.86,
+      "everReachTargetRatePct": 61.09,
+      "zeroRatePct": 14.82,
       "medianMaxDrawdownPct": 84.05,
       "p90MaxDrawdownPct": 100,
-      "medianBustSession": 32,
+      "medianBustSession": 31,
       "bustCount": 4269,
       "medianFinal": 26996.86,
-      "meanFinal": 26782.19,
+      "meanFinal": 26856.11,
       "p10Final": 0,
       "p90Final": 63413.83
     }
@@ -98,21 +104,21 @@
       {
         "buyIn": 400,
         "buyInCount": 25,
-        "bustRatePct": 21.27,
+        "bustRatePct": 21.29,
         "reachTargetRatePct": 52.83,
         "medianFinal": 21113.52
       },
       {
         "buyIn": 500,
         "buyInCount": 20,
-        "bustRatePct": 29.61,
+        "bustRatePct": 29.62,
         "reachTargetRatePct": 54.23,
         "medianFinal": 22418.13
       },
       {
         "buyIn": 700,
         "buyInCount": 14,
-        "bustRatePct": 43.42,
+        "bustRatePct": 43.43,
         "reachTargetRatePct": 50.11,
         "medianFinal": 20130.01
       },
@@ -121,7 +127,7 @@
         "buyInCount": 10,
         "bustRatePct": 56.07,
         "reachTargetRatePct": 41.51,
-        "medianFinal": 0
+        "medianFinal": 881.46
       }
     ],
     "winRate": [
@@ -129,17 +135,17 @@
         "winRatePct": 48,
         "bustRatePct": 82.11,
         "reachTargetRatePct": 5.98,
-        "medianFinal": 0
+        "medianFinal": 255.99
       },
       {
         "winRatePct": 50,
-        "bustRatePct": 56.91,
+        "bustRatePct": 56.94,
         "reachTargetRatePct": 23.52,
-        "medianFinal": 0
+        "medianFinal": 429.23
       },
       {
         "winRatePct": 52,
-        "bustRatePct": 29.61,
+        "bustRatePct": 29.62,
         "reachTargetRatePct": 54.23,
         "medianFinal": 22418.13
       },
