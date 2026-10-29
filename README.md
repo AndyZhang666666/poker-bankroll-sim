@@ -1,5 +1,26 @@
 # Bankroll · 波动实验室
 
+[在线体验](https://andyzhang666666.github.io/poker-bankroll-sim/) · [English](README.en.md) · [作品索引](https://github.com/AndyZhang666666/AndyZhang666666/blob/main/PROJECTS.md)
+
+曾经达到目标，与最终守住目标，是同一回事吗？
+
+## 值得看的设计
+
+- 额度不足而停止时保留余额，不静默清零。
+- 停止、曾经达标、最终达标分别统计。
+- 固定种子便于复现，区间只表达抽样误差。
+
+## 建议体验路径
+
+1. 设置余额、基础额度、波动和获胜假设。
+2. 对照样本路径、分位带与最终分布，检查三种事件。
+3. 固定其余输入做扫描，导出种子、模型版本与结果。
+
+**运行方式：** 固定种子的合成模型练习。各场独立、无抽水、无真实玩家行为，不用于财务预测或真钱下注。
+
+<details>
+<summary>展开实现、模型与验证记录</summary>
+
 [在线体验](https://andyzhang666666.github.io/poker-bankroll-sim/) · [验收与设计记录](docs/VALIDATION.md) · [更新记录](CHANGELOG.md)
 
 同样的获胜假设，为什么有些路径先停止，有些路径曾经达到目标、最终又回落？本项目用固定随机种子的合成模型，将这几个经常混淆的结果分开。无需登录、无 API Key、浏览器本地计算。
@@ -72,3 +93,5 @@ TEST_URL=http://localhost:8804/poker-bankroll-sim/ node scripts/test-browser.mjs
 ## License
 
 MIT，沿用原有许可。
+
+</details>
